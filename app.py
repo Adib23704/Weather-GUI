@@ -1,7 +1,19 @@
 import tkinter as tk
 import threading
 import requests
-	
+
+def search_weather():
+    location = input_field.get()
+    input_field.config(state=tk.DISABLED)
+    loading_popup = tk.Toplevel(root)
+    loading_popup.title('Loading...')
+    loading_label = tk.Label(loading_popup, text='Fetching weather data...')
+    loading_label.pack()
+
+    weather_thread = threading.Thread(target=lambda: show_weather(get_weather(location), loading_popup))
+    weather_thread.start()
+
+
 root = tk.Tk()
 root.title('Weather App')
 
