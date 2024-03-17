@@ -12,6 +12,19 @@ def get_weather(location):
     else:
         return None
 
+
+def show_weather(data, loading_popup):
+    if data:
+        city = f"{data['location']['name']}, {data['location']['country']}"
+        temperature = data['current']['temp_c']
+        weather = data['current']['condition']['text']
+        weather_label.config(text=f'City: {city}\nTemperature: {temperature:.1f}°C\nWeather: {weather}')
+    else:
+        weather_label.config(text='Error retrieving weather data!')
+    loading_popup.destroy()
+    input_field.config(state=tk.NORMAL)
+
+
 def search_weather():
     location = input_field.get()
     input_field.config(state=tk.DISABLED)
