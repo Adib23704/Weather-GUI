@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 import threading
 import requests
 
@@ -13,7 +14,7 @@ def get_weather(location):
         return None
 
 
-def show_weather(data, loading_popup):
+def show_weather(data, progress_bar):
     if data:
         city = f"{data['location']['name']}, {data['location']['country']}"
         temperature = data['current']['temp_c']
@@ -21,24 +22,24 @@ def show_weather(data, loading_popup):
         weather_label.config(text=f'City: {city}\nTemperature: {temperature:.1f}°C\nWeather: {weather}')
     else:
         weather_label.config(text='Error retrieving weather data!')
-    loading_popup.destroy()
     input_field.config(state=tk.NORMAL)
+    progress_bar.destroy()
 
 
 def search_weather():
     location = input_field.get()
     input_field.config(state=tk.DISABLED)
-    loading_popup = tk.Toplevel(root)
-    loading_popup.title('Loading...')
-    loading_label = tk.Label(loading_popup, text='Fetching weather data...')
-    loading_label.pack()
-
-    weather_thread = threading.Thread(target=lambda: show_weather(get_weather(location), loading_popup))
+    progress_bar = ttk.Progressbar(root, length=200, mode='indeterminate')
+    progress_bar.pack()
+    progress_bar.start(10)
+    weather_thread = threading.Thread(target=lambda: show_weather(get_weather(location), progress_bar))
     weather_thread.start()
 
 
 root = tk.Tk()
 root.title('Weather App')
+root.geometry("300x200")
+root.resizable(False, False)
 
 input_field = tk.Entry(root, width=30)
 input_field.pack(pady=10)
