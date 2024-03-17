@@ -2,6 +2,16 @@ import tkinter as tk
 import threading
 import requests
 
+API_KEY = 'a653085cc4744c50b04115958241703'
+
+def get_weather(location):
+    url = f'https://api.weatherapi.com/v1/current.json?key={API_KEY}&q={location}&aqi=no'
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
 def search_weather():
     location = input_field.get()
     input_field.config(state=tk.DISABLED)
