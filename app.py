@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 import threading
 import requests
+import os
 
-# Replace 'API_KEY_HERE' with your key from https://www.weatherapi.com/
-API_KEY = 'API_KEY_HERE'
+API_KEY = os.environ.get('API_KEY')
 
 def get_weather(location):
     url = f'https://api.weatherapi.com/v1/current.json?key={API_KEY}&q={location}&aqi=no'

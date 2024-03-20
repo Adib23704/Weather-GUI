@@ -6,7 +6,7 @@ This repository contains a Python script using Tkinter to create a simple weathe
 
 1. Ensure you have Python and Tkinter installed.
 2. Install the dependencies using `pip install -r requirements.txt`.
-3. Obtain API key from [https://weatherapi.com](https://www.weatherapi.com/) and replace `API_KEY_HERE` in `app.py`.
+3. Obtain API key from [https://weatherapi.com](https://www.weatherapi.com/) and rename `.env.example` to `.env` and put the API key there as `API_KEY=`.
 4. Run the script using `py app.py`.
 
 ### Contributing
