@@ -3,11 +3,13 @@ from tkinter import ttk
 import threading
 import requests
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 API_KEY = os.environ.get('API_KEY')
 
 def get_weather(location):
-    url = f'https://api.weatherapi.com/v1/current.json?key={API_KEY}&q={location}&aqi=no'
+    url = f'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}?key={API_KEY}&contentType=json&include=current&unitGroup=metric'
     response = requests.get(url)
     if response.status_code == 200:
         return response.json()
@@ -17,9 +19,9 @@ def get_weather(location):
 
 def show_weather(data, progress_bar):
     if data:
-        city = f"{data['location']['name']}, {data['location']['country']}"
-        temperature = data['current']['temp_c']
-        weather = data['current']['condition']['text']
+        city = data['resolvedAddress']
+        temperature = data['currentConditions']['temp']
+        weather = data['currentConditions']['conditions']
         weather_label.config(text=f'City: {city}\nTemperature: {temperature:.1f}°C\nWeather: {weather}')
     else:
         weather_label.config(text='Error retrieving weather data!')
@@ -29,6 +31,8 @@ def show_weather(data, progress_bar):
 
 def search_weather():
     location = input_field.get()
+    if location == '':
+        return
     input_field.config(state=tk.DISABLED)
     progress_bar = ttk.Progressbar(root, length=200, mode='indeterminate')
     progress_bar.pack()
